@@ -1,0 +1,24 @@
+.toolbar {
+
+}
+.toolbar > a {
+  padding: 2px;
+  font-size: 0.7em;
+}
+
+.data-table {
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background-color: cornflowerblue;
+  padding: 7px;
+}
+
+.data-table td {
+  padding: 5px;
+}
+.col-resizer {
+  display: inline-block;
+  width: 20px;
+}
