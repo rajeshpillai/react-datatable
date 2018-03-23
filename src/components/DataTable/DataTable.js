@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './datatable.css';
 
+var th, startOffset;
 export default  class DataTable extends React.Component {
     constructor(props) {
         super(props);
@@ -20,6 +21,7 @@ export default  class DataTable extends React.Component {
     _preSearchData = null
 
     sort=(e) => {
+        if (th) return;
         var data = this.state.data.slice();
         var column = ReactDOM.findDOMNode(e.target).parentNode.cellIndex; 
         var colTitle = e.target.dataset.col;
@@ -27,6 +29,7 @@ export default  class DataTable extends React.Component {
         var descending = this.state.sortby === column && !this.state.descending;
         data.sort((a,b) => {
             var sortVal = 0;
+            console.log(`${a[colTitle]} - ${b[colTitle]}`)
             if (a[colTitle] < b[colTitle]) {
                 sortVal = -1;
             } else if (a[colTitle] > b[colTitle]){
@@ -181,11 +184,13 @@ export default  class DataTable extends React.Component {
     }
 
     onDragStart = (e, source) => {
+        if (th) return;
         console.log('dragstart:',source);
         e.dataTransfer.setData("source", source);
     }
 
     onDrag = (ev, id) => {
+        if (th) return;
         console.log('drag:',id);
     }
 
@@ -194,6 +199,7 @@ export default  class DataTable extends React.Component {
     }
 
     onDrop = (e, target) => {
+        if (th) return; // if th resizing
         e.preventDefault();
         var source = e.dataTransfer.getData("source");
         console.log(`DROPPED  ${source} at ${target}`);
@@ -211,6 +217,14 @@ export default  class DataTable extends React.Component {
 
     }
 
+    onColMouseDown =(e, thElem) => {
+        return;
+        e.stopPropagation();
+        console.log(this,th);
+        th = thElem;
+        startOffset = th.offsetWidth - e.pageX;
+    }
+
     renderTable = () => {
         var {headers,data} = this.state;
 
@@ -220,13 +234,14 @@ export default  class DataTable extends React.Component {
         })
         var headerView = headers.map((header, index) => {
             let title = header.title;
-            let cleanTitle = header.title;
+            let cleanTitle = header.accessor;
             let width = header.width;
             if (this.state.sortby === index) {
                 title += this.state.descending ? '\u2191': '\u2193'
             }
             return (
                 <th key={index} 
+                    ref={(th)=>this.th=th}
                     style={{width: width}}
                     data-col={cleanTitle}
                     onDragStart={(e)=>this.onDragStart(e, index)}
@@ -238,8 +253,11 @@ export default  class DataTable extends React.Component {
                         draggable className="header-cell">
                         {title}
                     </span>
-                    <span className="col-resizer">
-                    </span>
+                    <div 
+                        onMouseDown={(e)=>{this.onColMouseDown(e, this.th)}}
+                        className="col-resizer" >
+                        &nbsp;
+                    </div>
                 </th>
             )
         });
@@ -254,7 +272,6 @@ export default  class DataTable extends React.Component {
                     let content = row[header.accessor];
                     let cell = header.cell; // row[header.colRenderer];
                     if (cell) {
-                        console.log(typeof(cell));
                         if (typeof(cell) === "object") {
                             if (cell.type === "image" && content) {
                                 content = <img style={cell.style} src={content} />
@@ -304,6 +321,16 @@ export default  class DataTable extends React.Component {
              this.replay();
             }
         }
+
+        document.addEventListener("mousemove", function (e) {
+            if (th) {
+                th.style.width = startOffset + e.pageX + "px";
+            }
+        })
+
+        document.addEventListener("mouseup", function (e) {
+            th = undefined;
+        })
     }
     render() {
         return (

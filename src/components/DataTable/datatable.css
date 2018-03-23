@@ -13,12 +13,24 @@
 .data-table th {
   background-color: cornflowerblue;
   padding: 7px;
+  position: relative;
 }
 
 .data-table td {
   padding: 5px;
 }
+
+.col-container {
+  
+}
 .col-resizer {
-  display: inline-block;
+  position: absolute;
   width: 20px;
+  height:30px;
+  cursor: col-resize;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  user-select: none;
 }
