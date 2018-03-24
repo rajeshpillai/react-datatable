@@ -1,9 +1,10 @@
 .toolbar {
 
 }
-.toolbar > a {
-  padding: 2px;
-  font-size: 0.7em;
+
+.toolbar a, .toolbar button {
+  font-size: 0.9em;
+  padding: 5px;
 }
 
 .data-table {
@@ -11,24 +12,21 @@
 }
 
 .data-table th {
-  background-color: lightgray;
+  background-color:whitesmoke;
   padding: 7px;
   position: relative;
   border: 1px solid #e5e5e5;
   box-shadow: inset 0 0 0 0 transparent;
+  text-align: left;
 }
 
 .data-table td {
   border: 1px solid #eee;
   line-height: 24px;
-  padding: 6px 6px 6px 12px;
   color: #212121;
   vertical-align: middle;
 }
 
-.col-container {
-  
-}
 .col-resizer {
   position: absolute;
   width: 20px;
@@ -39,4 +37,10 @@
   right: 0;
   bottom: 0;
   user-select: none;
+}
+
+.rating {
+  background-color: lightgray;
+  font-size: 0.8em;
+  line-height: 2em;
 }

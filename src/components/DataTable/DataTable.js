@@ -134,22 +134,6 @@ export default  class DataTable extends React.Component {
         this.setState(newState);
     }
 
-    replay = () => {
-        console.log("replaying...", this._log);
-        if (this._log.length === 0) {
-            console.warn("No state to replay yet");
-            return;
-        }
-        var idx = -1;
-        var interval = setInterval (() => {
-            idx++;
-            if (idx === this._log.length -1) {
-                clearInterval(interval);
-            }
-            this.setState(this._log[idx]);
-        }, 1000);
-    }
-
     download = (e, format) => {
         var contents = format === 'json'?
             JSON.stringify(this.state.data)
@@ -316,12 +300,6 @@ export default  class DataTable extends React.Component {
 
     
     componentDidMount() {
-        document.onkeydown = (e) => {
-            if (e.altKey && e.shiftKey && e.which === 82) { // ALT+SHIFT+R(eplay)
-             this.replay();
-            }
-        }
-
         document.addEventListener("mousemove", function (e) {
             if (th) {
                 th.style.width = startOffset + e.pageX + "px";
@@ -336,6 +314,7 @@ export default  class DataTable extends React.Component {
         return (
             <div>
              {this.renderToolbar()}
+             <br/>
              {this.renderTable()}
             </div>
         )

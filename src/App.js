@@ -12,12 +12,14 @@ export default class App extends React.Component {
         {title:"Name",accessor: "name", width: 300, index: 0},
         {title:"Age",accessor: "age",index: 1},
         {title:"Qualification",accessor: "qualification",index:2},
-        {title:"Rating",accessor: "rating",index:3, cell: row => (
-          <div style={{
-              backgroundColor: "yellow",
-              width: row * 10 + "px"
-          }}>
-            {row}
+        {title:"Rating",accessor: "rating",index:3,width: 200, cell: row => (
+          <div  className="rating">
+            <div style={{
+              backgroundColor: "lightskyblue",
+              height: "20px",
+              width: (row/5) * 100  + "px",
+              margin: "3px 0 4px 0"
+           }}>{row}</div>
           </div>
         )},
         {title:"Profile",accessor:"profile", width: 200, index:4,cell:{
