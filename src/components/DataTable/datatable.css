@@ -16,7 +16,6 @@
   padding: 7px;
   position: relative;
   border: 1px solid #e5e5e5;
-  box-shadow: inset 0 0 0 0 transparent;
   text-align: left;
 }
 
@@ -25,6 +24,7 @@
   line-height: 24px;
   color: #212121;
   vertical-align: middle;
+  padding: 3px;
 }
 
 .col-resizer {
@@ -40,6 +40,7 @@
 }
 
 .rating {
+  border:none;
   background-color: lightgray;
   font-size: 0.8em;
   line-height: 2em;
