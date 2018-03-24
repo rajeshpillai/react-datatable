@@ -99,8 +99,11 @@ export default  class DataTable extends React.Component {
             return;
         }
         var idx = e.target.dataset.idx;
+        console.log("searching: ", needle,idx);
         var searchdata = this._preSearchData.filter((row) => {
-            return row[idx].toString().toLowerCase().indexOf(needle) > -1;
+            let colName = Object.keys(row)[idx];
+            console.log(row);
+            return row[colName].toString().toLowerCase().indexOf(needle) > -1;
         });
         this.logSetState({
             data: searchdata
