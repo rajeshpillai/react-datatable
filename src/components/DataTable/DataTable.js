@@ -6,7 +6,8 @@ var th, startOffset;
 export default  class DataTable extends React.Component {
     constructor(props) {
         super(props);
-        this.noData = props.noData || "No Records found!!"
+        this.noData = props.noData || "No Records found!!";
+        this.width = props.width || "100%";
     }
 
     state = {
@@ -286,7 +287,7 @@ export default  class DataTable extends React.Component {
         });
 
         return (
-            <table className="data-table" border="1">
+            <table className="data-table" border="1" style={{width: this.width}}>
                 <thead onClick={this.sort}>
                     <tr>
                         {headerView}
