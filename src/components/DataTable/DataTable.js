@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './datatable.css';
 
-var th, startOffset;
 export default  class DataTable extends React.Component {
     constructor(props) {
         super(props);
@@ -21,8 +20,7 @@ export default  class DataTable extends React.Component {
 
     _preSearchData = null
 
-    sort=(e) => {
-        if (th) return;
+    onSort=(e) => {
         var data = this.state.data.slice();
         var column = ReactDOM.findDOMNode(e.target).parentNode.cellIndex; 
         var colTitle = e.target.dataset.col;
@@ -46,7 +44,7 @@ export default  class DataTable extends React.Component {
         });
     }
 
-    showEditor = (e) => {
+    onShowEditor = (e) => {
         this.logSetState({ 
             edit: {
                 row: parseInt(e.target.dataset.row, 10),
@@ -55,7 +53,7 @@ export default  class DataTable extends React.Component {
         });
     }
 
-    save = (e) => {
+    onSave = (e) => {
         e.preventDefault();
         var input = e.target.firstChild;
 
@@ -76,7 +74,7 @@ export default  class DataTable extends React.Component {
 
     }
 
-    toggleSearch = () => {
+    onToggleSearch = () => {
         if (this.state.search) {
             this.logSetState({
                 data: this._preSearchData,
@@ -91,7 +89,7 @@ export default  class DataTable extends React.Component {
         }
     }
 
-    search = (e) => {
+    onSearch = (e) => {
         var needle = e.target.value.toLowerCase();
         if (!needle) {
             this.logSetState({
@@ -116,7 +114,7 @@ export default  class DataTable extends React.Component {
             return null;
         }
         return (
-            <tr onChange={this.search}>
+            <tr onChange={this.onSearch}>
                 {this.state.headers.map((_ignore, idx) => {
                     return (<td key={idx}>
                             <input type="text" data-idx={idx} />
@@ -162,7 +160,7 @@ export default  class DataTable extends React.Component {
         return (
             <div className="toolbar">
                 <button 
-                    onClick={this.toggleSearch}>search</button>
+                    onClick={this.onToggleSearch}>search</button>
                 <a onClick={(e) => {this.download(e,'json')}}
                     href="data.json">Export JSON</a>
                 <a onClick={(e) => {this.download(e,'csv')}}
@@ -172,13 +170,11 @@ export default  class DataTable extends React.Component {
     }
 
     onDragStart = (e, source) => {
-        if (th) return;
         console.log('dragstart:',source);
         e.dataTransfer.setData("source", source);
     }
 
     onDrag = (ev, id) => {
-        if (th) return;
         console.log('drag:',id);
     }
 
@@ -187,7 +183,6 @@ export default  class DataTable extends React.Component {
     }
 
     onDrop = (e, target) => {
-        if (th) return; // if th resizing
         e.preventDefault();
         var source = e.dataTransfer.getData("source");
         console.log(`DROPPED  ${source} at ${target}`);
@@ -203,14 +198,6 @@ export default  class DataTable extends React.Component {
             headers
         })
 
-    }
-
-    onColMouseDown =(e, thElem) => {
-        return;
-        e.stopPropagation();
-        console.log(this,th);
-        th = thElem;
-        startOffset = th.offsetWidth - e.pageX;
     }
 
     renderTable = () => {
@@ -241,11 +228,6 @@ export default  class DataTable extends React.Component {
                         draggable className="header-cell">
                         {title}
                     </span>
-                    <div 
-                        onMouseDown={(e)=>{this.onColMouseDown(e, this.th)}}
-                        className="col-resizer" >
-                        &nbsp;
-                    </div>
                 </th>
             )
         });
@@ -269,18 +251,15 @@ export default  class DataTable extends React.Component {
                         }
                     }
                     if (edit && edit.row === rowIdx && edit.cell===index) {
-                        content = <form onSubmit={this.save}>
+                        content = <form onSubmit={this.onSave}>
                             <input type="text" defaultValue={content} />
                         </form>
                     }
-                    return (<td key={index} 
-                        data-row={rowIdx}>
-                        {
-                            content
-                            /* {type==="text" ? content: 
-                            <img style={{"width":"50px"}} src={content} />
-                        } */}
-                    </td>
+                    return (
+                        <td key={index} 
+                            data-row={rowIdx}>
+                            { content }
+                        </td>
                     );
                 })}
             </tr>);
@@ -288,12 +267,12 @@ export default  class DataTable extends React.Component {
 
         return (
             <table className="data-table" border="1" style={{width: this.width}}>
-                <thead onClick={this.sort}>
+                <thead onClick={this.onSort}>
                     <tr>
                         {headerView}
                     </tr>
                 </thead>
-                <tbody onDoubleClick={this.showEditor}>
+                <tbody onDoubleClick={this.onShowEditor}>
                     {this.renderSearch()}
                     {!this.state.data.length && this.noData}
                     {this.state.data && contentView}
@@ -302,24 +281,11 @@ export default  class DataTable extends React.Component {
         );
     }
 
-    
-    componentDidMount() {
-        document.addEventListener("mousemove", function (e) {
-            if (th) {
-                th.style.width = startOffset + e.pageX + "px";
-            }
-        })
-
-        document.addEventListener("mouseup", function (e) {
-            th = undefined;
-        })
-    }
     render() {
         return (
             <div>
-             {this.renderToolbar()}
-             <br/>
-             {this.renderTable()}
+                 {this.renderToolbar()}
+                 {this.renderTable()}
             </div>
         )
     }
