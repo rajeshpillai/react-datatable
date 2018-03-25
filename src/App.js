@@ -9,6 +9,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       headers: [
+        {title:"Id",accessor: "id", index: 0},
         {title:"Name",accessor: "name", width: 300, index: 0},
         {title:"Age",accessor: "age",index: 1},
         {title:"Qualification",accessor: "qualification",index:2},
@@ -57,7 +58,7 @@ export default class App extends React.Component {
           <DataTable 
             keyField="id"
             pagination={{
-              enabled: true,
+              enabled: false,
               pageLength: 5
             }}
             width="600px"

@@ -125,7 +125,7 @@ export default  class DataTable extends React.Component {
         console.log("searching: ", needle,idx);
         var searchdata = this._preSearchData.filter((row) => {
             let colName = Object.keys(row)[idx];
-            console.log(row);
+            console.log(`searching ${colName}`)
             return row[colName].toString().toLowerCase().indexOf(needle) > -1;
         });
         this.logSetState({
@@ -158,6 +158,15 @@ export default  class DataTable extends React.Component {
         }
         this._log.push(JSON.parse(JSON.stringify(newState)));
         this.setState(newState);
+    }
+
+    renderToolbar = () =>{
+        return (
+            <div className="toolbar">
+                <button 
+                    onClick={this.onToggleSearch}>search</button>
+            </div>
+        );
     }
     
     onDragStart = (e, source) => {
@@ -367,6 +376,7 @@ export default  class DataTable extends React.Component {
     render() {
         return (
             <div>
+                 {this.renderToolbar()}
                  {this.pagination.enabled && this.renderPagination()}
                  {this.renderTable()}
             </div>
