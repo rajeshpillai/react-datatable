@@ -136,7 +136,7 @@ export default  class DataTable extends React.Component {
         this.setState(newState);
     }
 
-    download = (e, format) => {
+    onDownload = (e, format) => {
         var contents = format === 'json'?
             JSON.stringify(this.state.data)
             : this.state.data.reduce((result, row) => {
@@ -161,9 +161,9 @@ export default  class DataTable extends React.Component {
             <div className="toolbar">
                 <button 
                     onClick={this.onToggleSearch}>search</button>
-                <a onClick={(e) => {this.download(e,'json')}}
+                <a onClick={(e) => {this.onDownload(e,'json')}}
                     href="data.json">Export JSON</a>
-                <a onClick={(e) => {this.download(e,'csv')}}
+                <a onClick={(e) => {this.onDownload(e,'csv')}}
                     href="data.json">Export CSV</a>
             </div>
         );
