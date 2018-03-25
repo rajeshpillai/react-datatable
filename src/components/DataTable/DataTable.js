@@ -48,6 +48,8 @@ export default  class DataTable extends React.Component {
             sortby: column,
             descending
         });
+
+        this.onGotoPage(null, this.currentPage);
     }
 
     onShowEditor = (e) => {
@@ -188,6 +190,7 @@ export default  class DataTable extends React.Component {
 
     onGotoPage = (e, pageNo) => {
         console.log("pageno: ", pageNo);
+        this.currentPage = pageNo;
         let pagedData = this.getPagedData(pageNo, this.pageLength);
         this.setState({
             pagedData: pagedData
