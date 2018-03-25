@@ -48,7 +48,7 @@ export default  class DataTable extends React.Component {
             if (descending) {sortVal = sortVal * -1;}
             return sortVal;
         });
-        this.logSetState({
+        this.setState({
             data: data,
             sortby: column,
             descending
@@ -61,7 +61,7 @@ export default  class DataTable extends React.Component {
         let id = e.target.dataset.id;
         console.log(`editing row with id-> ${id}`);
 
-        this.logSetState({ 
+        this.setState({ 
             edit: {
                 row: parseInt(e.target.dataset.row, 10),
                 rowId: id,
@@ -91,7 +91,7 @@ export default  class DataTable extends React.Component {
         updateRow[header.accessor] = input.value;
 
         // Update state
-        this.logSetState({
+        this.setState({
             edit: null, // done editing
             data: data
         });
@@ -100,14 +100,14 @@ export default  class DataTable extends React.Component {
 
     onToggleSearch = () => {
         if (this.state.search) {
-            this.logSetState({
+            this.setState({
                 data: this._preSearchData,
                 search: false
             });
             this._preSearchData = null;
         } else {
             this._preSearchData = this.state.data;
-            this.logSetState({
+            this.setState({
                 search: true
             });
         }
@@ -116,7 +116,7 @@ export default  class DataTable extends React.Component {
     onSearch = (e) => {
         var needle = e.target.value.toLowerCase();
         if (!needle) {
-            this.logSetState({
+            this.setState({
                 data: this._preSearchData
             })
             return;
@@ -128,7 +128,7 @@ export default  class DataTable extends React.Component {
             console.log(`searching ${colName}`)
             return row[colName].toString().toLowerCase().indexOf(needle) > -1;
         });
-        this.logSetState({
+        this.setState({
             data: searchdata,
             pagedData: searchdata
         });
@@ -152,17 +152,6 @@ export default  class DataTable extends React.Component {
                 })}
             </tr>
         );
-    }
-
-    _log = []
-
-    logSetState = (newState) => {
-        // remember the old state in a clone
-        if (this._log.length === 0) {
-            this._log.push(JSON.parse(JSON.stringify(this.state)));
-        }
-        this._log.push(JSON.parse(JSON.stringify(newState)));
-        this.setState(newState);
     }
 
     renderToolbar = () =>{
@@ -199,7 +188,7 @@ export default  class DataTable extends React.Component {
         srcHeader.index = targetHeader.index;
         targetHeader.index = temp;
 
-        this.logSetState({
+        this.setState({
             headers
         })
 
