@@ -56,6 +56,10 @@ export default class App extends React.Component {
           <h3>Data Table </h3>
           <DataTable 
             keyField="id"
+            pagination={{
+              enabled: true,
+              pageLength: 5
+            }}
             width="600px"
             headers={this.state.headers} 
             data={this.state.data} 

@@ -14,14 +14,18 @@ export default  class DataTable extends React.Component {
     }
     constructor(props) {
         super(props);
-        this.keyField = props.keyField;
+        this.keyField = props.keyField || "id";   // default 'id'
         this.noData = props.noData || "No Records found!!";
         this.width = props.width || "100%";
         this.currentPage = 1;
-        this.pageLength = 5;
+        this.setupPagination();
+    }
+
+    setupPagination = () => {
+        this.pagination = this.props.pagination || {};
+        this.pageLength = this.pagination.pageLength || 5;
         this.totalRecords = this.state.data.length;
         this.pages = Math.ceil(this.totalRecords / this.pageLength);
-        
     }
 
 
@@ -218,10 +222,13 @@ export default  class DataTable extends React.Component {
 
     componentDidMount() {
         console.log("cDM: ", this.currentPage);
-        this.onGotoPage(null, this.currentPage);
+        if (this.pagination.enabled) {
+            this.onGotoPage(null, this.currentPage);
+        }
     }
 
-    pagination = () => {
+    renderPagination = () => {
+        console.log("PageLength: ", this.pageLength);
         let totalRecords = this.state.data.length;
         let pages = Math.ceil(this.totalRecords / this.pageLength);
         this.pages = pages;
@@ -273,7 +280,7 @@ export default  class DataTable extends React.Component {
     renderTable = () => {
         //var {headers,data} = this.state;
         var {headers} = this.state;
-        let data = this.state.pagedData;
+        let data = this.pagination.enabled ?  this.state.pagedData : this.state.data;
 
         console.log("render: ", data);
 
@@ -360,7 +367,7 @@ export default  class DataTable extends React.Component {
     render() {
         return (
             <div>
-                 {this.pagination()}
+                 {this.pagination.enabled && this.renderPagination()}
                  {this.renderTable()}
             </div>
         )
