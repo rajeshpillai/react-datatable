@@ -122,15 +122,20 @@ export default  class DataTable extends React.Component {
             return;
         }
         var idx = e.target.dataset.idx;
-        console.log("searching: ", needle,idx);
+
         var searchdata = this._preSearchData.filter((row) => {
             let colName = Object.keys(row)[idx];
             console.log(`searching ${colName}`)
             return row[colName].toString().toLowerCase().indexOf(needle) > -1;
         });
         this.logSetState({
-            data: searchdata
+            data: searchdata,
+            pagedData: searchdata
         });
+
+        // if (this.pagination.enabled) {
+        //     this.onGotoPage(null, this.currentPage);
+        // }
     }
 
     renderSearch = () => {

@@ -58,7 +58,7 @@ export default class App extends React.Component {
           <DataTable 
             keyField="id"
             pagination={{
-              enabled: false,
+              enabled: true,
               pageLength: 5
             }}
             width="600px"
