@@ -55,6 +55,7 @@ export default class App extends React.Component {
         <div className="App">
           <h3>Data Table </h3>
           <DataTable 
+            keyField="id"
             width="600px"
             headers={this.state.headers} 
             data={this.state.data} 

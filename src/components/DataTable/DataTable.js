@@ -14,6 +14,7 @@ export default  class DataTable extends React.Component {
     }
     constructor(props) {
         super(props);
+        this.keyField = props.keyField;
         this.noData = props.noData || "No Records found!!";
         this.width = props.width || "100%";
         this.currentPage = 1;
@@ -78,13 +79,12 @@ export default  class DataTable extends React.Component {
         //data[this.state.edit.row][header.accessor]= input.value;
 
         var updateRow = this.state.data.find((d) => {
-            return d.id == rowId;
+            return d[this.keyField] == rowId;
         })
 
         console.log("found: ", updateRow);
 
         updateRow[header.accessor] = input.value;
-
 
         // Update state
         this.logSetState({
@@ -308,7 +308,7 @@ export default  class DataTable extends React.Component {
 
         var contentView = data.map((row, rowIdx) => {
             var edit = this.state.edit;
-            let id =  row["id"];
+            let id =  row[this.keyField];
             return (<tr key={rowIdx}>
                  {
                     // Loop through headers 
