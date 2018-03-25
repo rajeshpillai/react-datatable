@@ -280,17 +280,15 @@ export default  class DataTable extends React.Component {
     }
 
 
-    renderTable = () => {
-        //var {headers,data} = this.state;
+    _renderTableHeader = () => {
         var {headers} = this.state;
         let data = this.pagination.enabled ?  this.state.pagedData : this.state.data;
-
-        console.log("render: ", data);
 
         headers.sort((a, b) => {
             if (a.index > b.index) return 1;
             return -1;
-        })
+        });
+
         var headerView = headers.map((header, index) => {
             let title = header.title;
             let cleanTitle = header.accessor;
@@ -315,6 +313,12 @@ export default  class DataTable extends React.Component {
                 </th>
             )
         });
+        return headerView;
+    }
+    
+    _renderContent = () => {
+        var {headers} = this.state;
+        let data = this.pagination.enabled ?  this.state.pagedData : this.state.data;
 
         var contentView = data.map((row, rowIdx) => {
             var edit = this.state.edit;
@@ -350,6 +354,12 @@ export default  class DataTable extends React.Component {
                 })}
             </tr>);
         });
+
+        return contentView;
+    }
+    renderTable = () => {
+        let headerView = this._renderTableHeader();
+        let contentView = this._renderContent();
 
         return (
             <table className="data-table" border="1" style={{width: this.width}}>
