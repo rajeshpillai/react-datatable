@@ -246,7 +246,7 @@ export default  class DataTable extends React.Component {
 
         let buttons = [];
         for(let i = 1; i <= pages; i++) {
-            buttons.push(this._getButton(i));
+            buttons.push(this._getPaginationButtons(i));
         }
 
         let nextButton = (
@@ -262,7 +262,7 @@ export default  class DataTable extends React.Component {
         );
     }
 
-    _getButton =  (text) => {
+    _getPaginationButtons =  (text) => {
         let classNames = 'pagination-btn';
         if (this.currentPage == text) {
             classNames += ' current-page';
