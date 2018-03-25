@@ -135,40 +135,7 @@ export default  class DataTable extends React.Component {
         this._log.push(JSON.parse(JSON.stringify(newState)));
         this.setState(newState);
     }
-
-    onDownload = (e, format) => {
-        var contents = format === 'json'?
-            JSON.stringify(this.state.data)
-            : this.state.data.reduce((result, row) => {
-                return result
-                    + row.reduce((rowresult, cell, idx) => {
-                        return rowresult 
-                            + '"'
-                            + cell.replace(/"/g, '""')
-                            + '"'
-                            + (idx < row.length - 1 ? ',' : '');
-                    }, '')
-                    + "\n";
-                },'');
-        var URL = window.URL || window.webkitURL;
-        var blob = new Blob([contents], {type: 'text/' + format});
-        e.target.href = URL.createObjectURL(blob);
-        e.target.download = 'data.' + format;
-    }
-
-    renderToolbar = () =>{
-        return (
-            <div className="toolbar">
-                <button 
-                    onClick={this.onToggleSearch}>search</button>
-                <a onClick={(e) => {this.onDownload(e,'json')}}
-                    href="data.json">Export JSON</a>
-                <a onClick={(e) => {this.onDownload(e,'csv')}}
-                    href="data.json">Export CSV</a>
-            </div>
-        );
-    }
-
+    
     onDragStart = (e, source) => {
         console.log('dragstart:',source);
         e.dataTransfer.setData("source", source);
@@ -284,7 +251,6 @@ export default  class DataTable extends React.Component {
     render() {
         return (
             <div>
-                 {this.renderToolbar()}
                  {this.renderTable()}
             </div>
         )
