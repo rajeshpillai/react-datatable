@@ -3,20 +3,26 @@ import ReactDOM from 'react-dom';
 import './datatable.css';
 
 export default  class DataTable extends React.Component {
+    state = {
+        headers: this.props.headers,
+        data: this.props.data,
+        pagedData: this.props.data,
+        sortby: null,
+        descending: false,
+        edit: null, // {row: index, cell: index}
+        search: false,
+    }
     constructor(props) {
         super(props);
         this.noData = props.noData || "No Records found!!";
         this.width = props.width || "100%";
+        this.currentPage = 1;
+        this.pageLength = 5;
+        this.totalRecords = this.state.data.length;
+        this.pages = Math.ceil(this.totalRecords / this.pageLength);
+        
     }
 
-    state = {
-        headers: this.props.headers,
-        data: this.props.data,
-        sortby: null,
-        descending: false,
-        edit: null, // {row: index, cell: index}
-        search: false
-    }
 
     _preSearchData = null
 
@@ -167,8 +173,94 @@ export default  class DataTable extends React.Component {
 
     }
 
+    onPrevPage = (e) => {
+        if (this.currentPage == 1) return;
+        this.currentPage = this.currentPage - 1;
+        this.onGotoPage(e, this.currentPage);
+    }
+
+    onNextPage = (e) => {
+        if (this.currentPage > this.pages - 1) return;
+        this.currentPage = this.currentPage + 1;
+        let currentPageBtn = document.getElementById(`btn-${this.currentPage}`);
+        this.onGotoPage(e, this.currentPage);
+    }
+
+    onGotoPage = (e, pageNo) => {
+        console.log("pageno: ", pageNo);
+        let pagedData = this.getPagedData(pageNo, this.pageLength);
+        this.setState({
+            pagedData: pagedData
+        });        
+    }
+
+    getPagedData =  (pageNo, pageLength) => {
+        let startOfRecord = (pageNo - 1) * pageLength;
+        let endOfRecord = startOfRecord + pageLength;
+        let pagedData = this.state.data.slice(startOfRecord, endOfRecord);
+        return pagedData;
+    }
+
+    componentDidMount() {
+        console.log("cDM: ", this.currentPage);
+        this.onGotoPage(null, this.currentPage);
+    }
+
+    pagination = () => {
+        let totalRecords = this.state.data.length;
+        let pages = Math.ceil(this.totalRecords / this.pageLength);
+        this.pages = pages;
+
+        let prevButton = (
+            <button key="prev" className="pagination-btn prev"
+                onClick={(e)=> {this.onPrevPage(e)}}
+                type="button">
+                prev
+            </button>
+        );
+
+        let buttons = [];
+        for(let i = 1; i <= pages; i++) {
+            buttons.push(this._getButton(i));
+        }
+
+        let nextButton = (
+            <button key="next" className="pagination-btn prev"
+                onClick={(e)=> {this.onNextPage(e)}}
+                type="button">
+                next
+            </button>
+        );
+        
+        return (
+            [prevButton, ...buttons, nextButton]   
+        );
+    }
+
+    _getButton =  (text) => {
+        let classNames = 'pagination-btn';
+        if (this.currentPage == text) {
+            classNames += ' current-page';
+        }
+        let html = ( 
+            <button key={`btn-${text}`} id={`btn-${text}`}
+                className={classNames}
+                type="button"
+                onClick={(e)=> {this.onGotoPage(e, text)}}
+            >{text}
+            </button>
+        );
+
+        return html;
+    }
+
+
     renderTable = () => {
-        var {headers,data} = this.state;
+        //var {headers,data} = this.state;
+        var {headers} = this.state;
+        let data = this.state.pagedData;
+
+        console.log("render: ", data);
 
         headers.sort((a, b) => {
             if (a.index > b.index) return 1;
@@ -251,6 +343,7 @@ export default  class DataTable extends React.Component {
     render() {
         return (
             <div>
+                 {this.pagination()}
                  {this.renderTable()}
             </div>
         )
