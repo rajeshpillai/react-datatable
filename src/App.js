@@ -30,15 +30,16 @@ export default class App extends React.Component {
         }}
       ],
       data: [
-          {name:"a", age:29, qualification:"B.Com",rating:3,profile: "./img/img1.jpg"},
-          {name:"b", age:35, qualification:"B.Sc",rating:2,profile:"./img/img2.jpg"},
-          {name:"c", age:42, qualification:"B.E",rating:3,profile:"./img/img3.jpeg"},
+          {id: 1, name:"a", age:29, qualification:"B.Com",rating:3,profile: "./img/img1.jpg"},
+          {id: 2, name:"b", age:35, qualification:"B.Sc",rating:2,profile:"./img/img2.jpg"},
+          {id: 3, name:"c", age:42, qualification:"B.E",rating:3,profile:"./img/img3.jpeg"},
         ]
     }
 
     var data = [];
-    for(var i = 1; i <= 10; i ++) {
+    for(var i = 4; i <= 10; i ++) {
       data.push({
+        id: i,
         name: "name " + i,
         age: i + 18,
         qualification: "Graduate",

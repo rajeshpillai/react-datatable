@@ -53,9 +53,13 @@ export default  class DataTable extends React.Component {
     }
 
     onShowEditor = (e) => {
+        let id = e.target.dataset.id;
+        console.log(`editing row with id-> ${id}`);
+
         this.logSetState({ 
             edit: {
                 row: parseInt(e.target.dataset.row, 10),
+                rowId: id,
                 cell: e.target.cellIndex
             }
         });
@@ -69,10 +73,18 @@ export default  class DataTable extends React.Component {
 
         // Clone the data
         var data = this.state.data.slice();
-
+        var rowId = this.state.edit.rowId;
         // Update the data
-        //data[this.state.edit.row][this.state.edit.cell] = input.value;
-        data[this.state.edit.row][header.accessor]= input.value;
+        //data[this.state.edit.row][header.accessor]= input.value;
+
+        var updateRow = this.state.data.find((d) => {
+            return d.id == rowId;
+        })
+
+        console.log("found: ", updateRow);
+
+        updateRow[header.accessor] = input.value;
+
 
         // Update state
         this.logSetState({
@@ -296,6 +308,7 @@ export default  class DataTable extends React.Component {
 
         var contentView = data.map((row, rowIdx) => {
             var edit = this.state.edit;
+            let id =  row["id"];
             return (<tr key={rowIdx}>
                  {
                     // Loop through headers 
@@ -318,7 +331,8 @@ export default  class DataTable extends React.Component {
                         </form>
                     }
                     return (
-                        <td key={index} 
+                        <td key={index}
+                            data-id={id} 
                             data-row={rowIdx}>
                             { content }
                         </td>
