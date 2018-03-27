@@ -4,17 +4,20 @@ import Pagination from './Pagination';
 import './datatable.css';
 
 export default  class DataTable extends React.Component {
-    state = {
-        headers: this.props.headers,
-        data: this.props.data,
-        pagedData: this.props.data,
-        sortby: null,
-        descending: false,
-        edit: null, // {row: index, cell: index}
-        search: false,
-    }
+   
     constructor(props) {
         super(props);
+        this.state = {
+            headers: props.headers,
+            data: props.data,
+            pagedData: props.data,
+            sortby: null,
+            descending: false,
+            edit: null, // {row: index, cell: index}
+            search: false,
+            pageLength: props.pagination.pageLength
+        }
+
         this.keyField = props.keyField || "id";   // default 'id'
         this.noData = props.noData || "No Records found!!";
         this.width = props.width || "100%";
@@ -25,7 +28,7 @@ export default  class DataTable extends React.Component {
     setupPagination = () => {
         this.pagination = this.props.pagination || {};
         this.pageLength = this.props.pagination.pageLength || 5;
-        this.totalRecords = this.state.data.length;
+        this.totalRecords = this.props.data.length;
         this.pages = Math.ceil(this.totalRecords / this.pageLength);
     }
 
@@ -197,15 +200,24 @@ export default  class DataTable extends React.Component {
 
 
     onGotoPage = (e, pageNo) => {
-        console.log("pageno: ", pageNo);
+        console.log("onGotoPage: ", pageNo, this.state.pageLength);
         this.currentPage = pageNo;
-        let pagedData = this.getPagedData(pageNo, this.pageLength);
+        let pagedData = this.getPagedData(pageNo, this.state.pageLength);
         this.setState({
             pagedData: pagedData
         });        
     }
 
+    onPageLengthChange = (pageLength) => {
+        this.setState({
+            pageLength: parseInt(pageLength,10)  
+        }, () => {
+            this.onGotoPage(null, this.currentPage);
+        });
+    }
+
     getPagedData =  (pageNo, pageLength) => {
+        console.log(`getting paged data for pageno ${pageNo} and records per page ${pageLength}`)
         let startOfRecord = (pageNo - 1) * pageLength;
         let endOfRecord = startOfRecord + pageLength;
         let pagedData = this.state.data.slice(startOfRecord, endOfRecord);
@@ -319,6 +331,7 @@ export default  class DataTable extends React.Component {
     }
 
     render() {
+        console.log("DataTable:render");
         return (
             <div>
                 {this.renderToolbar()}
@@ -326,7 +339,8 @@ export default  class DataTable extends React.Component {
                 {this.pagination.enabled && 
                 <Pagination 
                     totalRecords={this.state.data.length}
-                    pageLength = {this.pageLength}
+                    pageLength = {this.state.pageLength}
+                    onPageLengthChange = {this.onPageLengthChange}
                     onGotoPage = {this.onGotoPage}/>
                  }
                  {this.renderTable()}

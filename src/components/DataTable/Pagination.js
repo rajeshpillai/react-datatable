@@ -6,6 +6,7 @@ export default  class Pagination extends React.Component {
     constructor(props) {
         super(props);
         this.currentPage = 1;
+        this.pageLength = props.pageLength;
     }
 
     _getPaginationButtons =  (text) => {
@@ -44,7 +45,14 @@ export default  class Pagination extends React.Component {
         this.props.onGotoPage(e, pageNo);      
     }
 
+    onPageLengthChange = (e) => {
+        this.forceUpdate();
+        this.props.onPageLengthChange(this.pageLength.value);
+    }
+
     render() {
+        console.log("Pagination:render", this.props.pageLength);
+        
         let totalRecords = this.props.totalRecords;
         let pages = Math.ceil(totalRecords / this.props.pageLength);
         this.pages = pages;
@@ -70,10 +78,22 @@ export default  class Pagination extends React.Component {
                 next
             </button>
         );
+
+        let pageSelector = (
+            <React.Fragment key="s100">
+                <span key="page-selector" className="page-selector">Rows per page: 
+                    <input key="ps-no" 
+                        defaultValue={this.props.pageLength || 5}
+                        type="number"
+                        ref={(pageLength)=>this.pageLength=pageLength}
+                        onChange={(e)=>{this.onPageLengthChange()}}  />
+                </span>
+            </React.Fragment>
+        );
         
         return (
             <div className="pagination">
-                {[prevButton, ...buttons, nextButton]}
+                {[pageSelector, prevButton, ...buttons, nextButton]}
             </div>
         );
     }
