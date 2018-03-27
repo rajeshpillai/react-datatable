@@ -38,7 +38,7 @@ export default class App extends React.Component {
     }
 
     var data = [];
-    for(var i = 4; i <= 10; i ++) {
+    for(var i = 4; i <= 20; i ++) {
       data.push({
         id: i,
         name: "name " + i,
@@ -60,7 +60,7 @@ export default class App extends React.Component {
             keyField="id"
             pagination={{
               enabled: true,
-              pageLength: 5,
+              pageLength: 10,
               type: "long"
             }}
             width="600px"
