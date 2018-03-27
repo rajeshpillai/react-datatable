@@ -60,8 +60,11 @@ export default class App extends React.Component {
           <h3>Data Table </h3>
           <DynamicForm 
             model={[
-              {key: "firstName", label: "First Name"},
-              {key: "lastName",label: "Last Name"}
+              {key: "name", label: "Name"},
+              {key: "age",label: "Age"},
+              {key: "rating",label: "Rating"},
+              {key: "qualification",label: "Qualification"},
+              
             ]}
           />
           <DataTable 
