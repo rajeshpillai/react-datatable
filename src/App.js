@@ -59,7 +59,8 @@ export default class App extends React.Component {
             keyField="id"
             pagination={{
               enabled: true,
-              pageLength: 3
+              pageLength: 3,
+              type: "long"
             }}
             width="600px"
             headers={this.state.headers} 

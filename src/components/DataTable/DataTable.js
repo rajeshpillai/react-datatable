@@ -27,6 +27,7 @@ export default  class DataTable extends React.Component {
 
     setupPagination = () => {
         this.pagination = this.props.pagination || {};
+        this.paginationType  = this.props.pagination.type || "short";
         this.pageLength = this.props.pagination.pageLength || 5;
         this.totalRecords = this.props.data.length;
         this.pages = Math.ceil(this.totalRecords / this.pageLength);
@@ -334,16 +335,15 @@ export default  class DataTable extends React.Component {
         console.log("DataTable:render");
         return (
             <div>
-                {this.renderToolbar()}
-                 
                 {this.pagination.enabled && 
-                <Pagination 
-                    type = "short"
+                     <Pagination 
+                    type = {this.props.pagination.type}
                     totalRecords={this.state.data.length}
                     pageLength = {this.state.pageLength}
                     onPageLengthChange = {this.onPageLengthChange}
                     onGotoPage = {this.onGotoPage}/>
                  }
+                 {this.renderToolbar()}
                  {this.renderTable()}
             </div>
         )

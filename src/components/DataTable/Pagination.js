@@ -41,7 +41,9 @@ export default  class Pagination extends React.Component {
 
     onGotoPage = (e, pageNo) => {
         console.log("pageno: ", pageNo);
-        this.currentPageInput.value = pageNo
+        if (this.currentPageInput) {
+            this.currentPageInput.value = pageNo
+        }
         this.currentPage = pageNo;
         this.props.onGotoPage(e, pageNo);      
     }
