@@ -52,6 +52,7 @@ export default  class Pagination extends React.Component {
     }
 
     onCurrentPageChange = (e) => {
+        if (this.currentPageInput.value >= this.pages) this.currentPageInput.value = this.pages;
         this.currentPage = this.currentPageInput.value;
         this.props.onGotoPage(e, this.currentPageInput.value);      
     }
@@ -68,7 +69,7 @@ export default  class Pagination extends React.Component {
             <button key="prev" className="pagination-btn prev"
                 onClick={(e)=> {this.onPrevPage(e)}}
                 type="button">
-                prev
+                {"<"}
             </button>
         );
 
@@ -94,7 +95,7 @@ export default  class Pagination extends React.Component {
             <button key="next" className="pagination-btn prev"
                 onClick={(e)=> {this.onNextPage(e)}}
                 type="button">
-                next
+                {">"}
             </button>
         );
 
