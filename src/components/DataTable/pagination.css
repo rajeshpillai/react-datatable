@@ -1,0 +1,14 @@
+
+.pagination {
+  
+}
+.current-page {
+  background-color: skyblue;
+  color: black;
+}
+  
+.pagination-btn.next, .pagination-btn.prev {
+  background-color: lightcoral;
+  color: black;
+}
+  

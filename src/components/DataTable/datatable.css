@@ -45,13 +45,3 @@
   font-size: 0.8em;
   line-height: 2em;
 }
-
-.current-page {
-  background-color: skyblue;
-  color: black;
-}
-
-.pagination-btn.next, .pagination-btn.prev {
-  background-color: lightcoral;
-  color: black;
-}

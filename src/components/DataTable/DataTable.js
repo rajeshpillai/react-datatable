@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Pagination from './Pagination';
 import './datatable.css';
 
 export default  class DataTable extends React.Component {
@@ -23,7 +24,7 @@ export default  class DataTable extends React.Component {
 
     setupPagination = () => {
         this.pagination = this.props.pagination || {};
-        this.pageLength = this.pagination.pageLength || 5;
+        this.pageLength = this.props.pagination.pageLength || 5;
         this.totalRecords = this.state.data.length;
         this.pages = Math.ceil(this.totalRecords / this.pageLength);
     }
@@ -194,18 +195,6 @@ export default  class DataTable extends React.Component {
 
     }
 
-    onPrevPage = (e) => {
-        if (this.currentPage == 1) return;
-        this.currentPage = this.currentPage - 1;
-        this.onGotoPage(e, this.currentPage);
-    }
-
-    onNextPage = (e) => {
-        if (this.currentPage > this.pages - 1) return;
-        this.currentPage = this.currentPage + 1;
-        let currentPageBtn = document.getElementById(`btn-${this.currentPage}`);
-        this.onGotoPage(e, this.currentPage);
-    }
 
     onGotoPage = (e, pageNo) => {
         console.log("pageno: ", pageNo);
@@ -230,54 +219,6 @@ export default  class DataTable extends React.Component {
         }
     }
 
-    renderPagination = () => {
-        console.log("PageLength: ", this.pageLength);
-        let totalRecords = this.state.data.length;
-        let pages = Math.ceil(this.totalRecords / this.pageLength);
-        this.pages = pages;
-
-        let prevButton = (
-            <button key="prev" className="pagination-btn prev"
-                onClick={(e)=> {this.onPrevPage(e)}}
-                type="button">
-                prev
-            </button>
-        );
-
-        let buttons = [];
-        for(let i = 1; i <= pages; i++) {
-            buttons.push(this._getPaginationButtons(i));
-        }
-
-        let nextButton = (
-            <button key="next" className="pagination-btn prev"
-                onClick={(e)=> {this.onNextPage(e)}}
-                type="button">
-                next
-            </button>
-        );
-        
-        return (
-            [prevButton, ...buttons, nextButton]   
-        );
-    }
-
-    _getPaginationButtons =  (text) => {
-        let classNames = 'pagination-btn';
-        if (this.currentPage == text) {
-            classNames += ' current-page';
-        }
-        let html = ( 
-            <button key={`btn-${text}`} id={`btn-${text}`}
-                className={classNames}
-                type="button"
-                onClick={(e)=> {this.onGotoPage(e, text)}}
-            >{text}
-            </button>
-        );
-
-        return html;
-    }
 
 
     _renderTableHeader = () => {
@@ -380,8 +321,14 @@ export default  class DataTable extends React.Component {
     render() {
         return (
             <div>
-                 {this.renderToolbar()}
-                 {this.pagination.enabled && this.renderPagination()}
+                {this.renderToolbar()}
+                 
+                {this.pagination.enabled && 
+                <Pagination 
+                    totalRecords={this.state.data.length}
+                    pageLength = {this.pageLength}
+                    onGotoPage = {this.onGotoPage}/>
+                 }
                  {this.renderTable()}
             </div>
         )
