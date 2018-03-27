@@ -9,6 +9,7 @@
 
 .data-table {
   border-collapse: collapse;
+  box-shadow: 2px 2px 15px grey;
 }
 
 .data-table th {
@@ -41,6 +42,7 @@
 
 .rating {
   border:none;
+  box-shadow: 2px 2px 4px grey;
   background-color: lightgray;
   font-size: 0.8em;
   line-height: 2em;

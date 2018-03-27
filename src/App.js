@@ -23,8 +23,9 @@ export default class App extends React.Component {
           <div  className="rating">
             <div style={{
               backgroundColor: "lightskyblue",
-              height: "20px",
-              width: (row/5) * 100  + "px",
+              textAlign:"center",
+              height: "1.9em",
+              width: (row/5) * 201  + "px",
               margin: "3px 0 4px 0"
            }}>{row}</div>
           </div>
@@ -32,7 +33,7 @@ export default class App extends React.Component {
       ],
       data: [
           {id: 1, name:"a", age:29, qualification:"B.Com",rating:3,profile: "./img/profile.png"},
-          {id: 2, name:"b", age:35, qualification:"B.Sc",rating:2,profile:"./img/profile.png"},
+          {id: 2, name:"b", age:35, qualification:"B.Sc",rating:5,profile:"./img/profile.png"},
           {id: 3, name:"c", age:42, qualification:"B.E",rating:3,profile:"./img/profile.png"},
         ]
     }
