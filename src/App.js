@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom"
 import DataTable from './components/DataTable/DataTable';
+import DynamicForm from './components/DynamicForm';
 import './App.css';
 
 
@@ -57,6 +58,12 @@ export default class App extends React.Component {
       return (
         <div className="App">
           <h3>Data Table </h3>
+          <DynamicForm 
+            model={[
+              {key: "firstName", label: "First Name"},
+              {key: "lastName",label: "Last Name"}
+            ]}
+          />
           <DataTable 
             keyField="id"
             pagination={{
@@ -68,6 +75,8 @@ export default class App extends React.Component {
             headers={this.state.headers} 
             data={this.state.data} 
             noData="No records!" />
+
+
         </div>
       );
   }
