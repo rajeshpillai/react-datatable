@@ -41,13 +41,19 @@ export default  class Pagination extends React.Component {
 
     onGotoPage = (e, pageNo) => {
         console.log("pageno: ", pageNo);
+        this.currentPageInput.value = pageNo
         this.currentPage = pageNo;
         this.props.onGotoPage(e, pageNo);      
     }
 
     onPageLengthChange = (e) => {
-        this.forceUpdate();
+        //this.forceUpdate();
         this.props.onPageLengthChange(this.pageLength.value);
+    }
+
+    onCurrentPageChange = (e) => {
+        this.currentPage = this.currentPageInput.value;
+        this.props.onGotoPage(e, this.currentPageInput.value);      
     }
 
     render() {
@@ -67,9 +73,22 @@ export default  class Pagination extends React.Component {
         );
 
         let buttons = [];
-        for(let i = 1; i <= pages; i++) {
-            buttons.push(this._getPaginationButtons(i));
-        }
+        if (this.props.type === "long") {
+            for(let i = 1; i <= pages; i++) {
+                buttons.push(this._getPaginationButtons(i));
+            }
+        } else if (this.props.type === "short") {
+            buttons.push(
+                <input 
+                    key="currentPageInput"
+                    className="current-page-input"
+                    type="number" 
+                    max={this.pages}
+                    onChange={(e)=>{this.onCurrentPageChange()}}
+                    defaultValue = {this.currentPage}
+                    ref={(currentPageInput)=> { this.currentPageInput=currentPageInput}} />
+            );
+        }   
 
         let nextButton = (
             <button key="next" className="pagination-btn prev"

@@ -338,6 +338,7 @@ export default  class DataTable extends React.Component {
                  
                 {this.pagination.enabled && 
                 <Pagination 
+                    type = "short"
                     totalRecords={this.state.data.length}
                     pageLength = {this.state.pageLength}
                     onPageLengthChange = {this.onPageLengthChange}

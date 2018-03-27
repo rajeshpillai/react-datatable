@@ -1,6 +1,6 @@
 
 .pagination {
-
+  padding: 10px 0px;
 }
 .current-page {
   background-color: skyblue;
@@ -8,11 +8,20 @@
 }
   
 .pagination-btn.next, .pagination-btn.prev {
-  background-color: lightcoral;
   color: black;
+}
+
+.page-selector {
+  padding: 5px;
 }
 
 .page-selector > input {
   width: 3em;
+  text-align: center;
+  
 }
   
+.current-page-input {
+  width: 3em;
+  text-align: center;
+}
