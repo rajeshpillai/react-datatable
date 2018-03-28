@@ -1,5 +1,15 @@
-.App {
+.app {
   width: 95%;
   margin: 5px auto;
   display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.data-table {
+  padding-left: 20px;
+
+}
+.form {
+  padding-left: 20px;
 }

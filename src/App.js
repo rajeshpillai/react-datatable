@@ -65,8 +65,8 @@ export default class App extends React.Component {
   render() {
     console.log("APP:RENDER", this.state.data);
       return (
-        <div className="App">
-          <DynamicForm 
+        <div className="app">
+          <DynamicForm className="form"
             title = "Registration"
             model={[
               {key: "name", label: "Name", props: {required: true}},
@@ -76,7 +76,7 @@ export default class App extends React.Component {
             ]}
             onSubmit = {(model)=> {this.onSubmit(model)}}
           />
-          <DataTable 
+          <DataTable className="data-table"
             title="PROFILE"
             keyField="id"
             pagination={{

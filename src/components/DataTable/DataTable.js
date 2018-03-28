@@ -342,7 +342,7 @@ export default  class DataTable extends React.Component {
         console.log("DataTable:render", this.props.data);
         
         return (
-            <div>
+            <div className={this.props.className}>
                 {this.pagination.enabled && 
                      <Pagination 
                     type = {this.props.pagination.type}

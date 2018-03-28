@@ -51,7 +51,7 @@ export default  class DynamicForm extends React.Component {
         let title = this.props.title || "Dynamic Form";
         
         return (
-            <div>
+            <div className={this.props.className}>
                 <h3>{title}</h3>
                 <form className="dynamic-form" onSubmit={(e)=> { this.onSubmit(e)}}>
                     {this.renderForm()}
