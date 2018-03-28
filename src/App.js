@@ -59,6 +59,7 @@ export default class App extends React.Component {
         <div className="App">
           <h3>Data Table </h3>
           <DynamicForm 
+            caption = "Registration"
             model={[
               {key: "name", label: "Name", props: {required: true}},
               {key: "age",label: "Age", type: "number"},

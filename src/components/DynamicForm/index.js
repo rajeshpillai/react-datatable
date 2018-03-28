@@ -6,7 +6,6 @@ export default  class DynamicForm extends React.Component {
     state = {
     }
     constructor(props) {
-        props.model.type = props.model.type || "text";
         super(props);
         console.log("model: ",props.model);
     }
@@ -24,7 +23,7 @@ export default  class DynamicForm extends React.Component {
     }
     renderForm = () => {
         let model = this.props.model;
-
+        
         let formUI = model.map((m) => {
             let key = m.key;
             let type = m.type;
@@ -49,9 +48,11 @@ export default  class DynamicForm extends React.Component {
         return formUI;
     }
     render () {
+        let caption = this.props.caption || "Dynamic Form";
+        
         return (
             <div>
-                <h3>Dynamic Form</h3>
+                <h3>{caption}</h3>
                 <form className="dynamic-form" onSubmit={(e)=> { this.onSubmit(e)}}>
                     {this.renderForm()}
                     <div className="form-group">
