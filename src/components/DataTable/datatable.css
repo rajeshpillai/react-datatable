@@ -48,3 +48,8 @@
   font-size: 0.8em;
   line-height: 2em;
 }
+
+.data-table-caption {
+  text-align: left;
+  font-weight: bold;
+}

@@ -82,9 +82,9 @@ export default class App extends React.Component {
             pagination={{
               enabled: true,
               pageLength: 10,
-              type: "long"
+              type: "short"  // long,short
             }}
-            width="600px"
+            width="100%"
             headers={this.state.headers} 
             data={this.state.data} 
             noData="No records!" />
