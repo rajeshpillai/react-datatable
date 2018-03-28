@@ -48,11 +48,11 @@ export default  class DynamicForm extends React.Component {
         return formUI;
     }
     render () {
-        let caption = this.props.caption || "Dynamic Form";
+        let title = this.props.title || "Dynamic Form";
         
         return (
             <div>
-                <h3>{caption}</h3>
+                <h3>{title}</h3>
                 <form className="dynamic-form" onSubmit={(e)=> { this.onSubmit(e)}}>
                     {this.renderForm()}
                     <div className="form-group">

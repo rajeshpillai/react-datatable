@@ -320,9 +320,10 @@ export default  class DataTable extends React.Component {
     renderTable = () => {
         let headerView = this._renderTableHeader();
         let contentView = this._renderContent();
-
+        let title = this.props.title || "Data Table";
         return (
             <table className="data-table" border="1" style={{width: this.width}}>
+                <caption>{title}</caption>
                 <thead onClick={this.onSort}>
                     <tr>
                         {headerView}
@@ -339,6 +340,7 @@ export default  class DataTable extends React.Component {
 
     render() {
         console.log("DataTable:render", this.props.data);
+        
         return (
             <div>
                 {this.pagination.enabled && 
