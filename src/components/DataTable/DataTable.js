@@ -225,14 +225,20 @@ export default  class DataTable extends React.Component {
         return pagedData;
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data.length != this.state.data.length) {
+            this.setState({
+                data: nextProps.data
+            })
+        }
+    }
+
     componentDidMount() {
         console.log("cDM: ", this.currentPage);
         if (this.pagination.enabled) {
             this.onGotoPage(null, this.currentPage);
         }
     }
-
-
 
     _renderTableHeader = () => {
         var {headers} = this.state;
@@ -332,7 +338,7 @@ export default  class DataTable extends React.Component {
     }
 
     render() {
-        console.log("DataTable:render");
+        console.log("DataTable:render", this.props.data);
         return (
             <div>
                 {this.pagination.enabled && 

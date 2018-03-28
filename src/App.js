@@ -53,21 +53,30 @@ export default class App extends React.Component {
     this.state.data = [...this.state.data, ...data]
   }
 
-
+  // From dynamic form
+  onSubmit = (model) => {
+    alert(JSON.stringify(model));
+    model.id = +new Date()
+    this.setState({
+      data: [model, ...this.state.data]
+    })
+    
+  }
   render() {
+    console.log("APP:RENDER", this.state.data);
       return (
         <div className="App">
-          <h3>Data Table </h3>
           <DynamicForm 
             caption = "Registration"
             model={[
               {key: "name", label: "Name", props: {required: true}},
               {key: "age",label: "Age", type: "number"},
               {key: "rating",label: "Rating", type: "number", props:{min:0,max:5}},
-              {key: "qual",label: "Qualification"},
-              
+              {key: "qualification",label: "Qualification"},
             ]}
+            onSubmit = {(model)=> {this.onSubmit(model)}}
           />
+          <h3>Data Table </h3>
           <DataTable 
             keyField="id"
             pagination={{
@@ -79,8 +88,6 @@ export default class App extends React.Component {
             headers={this.state.headers} 
             data={this.state.data} 
             noData="No records!" />
-
-
         </div>
       );
   }

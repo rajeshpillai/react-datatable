@@ -60,7 +60,7 @@ export default  class Pagination extends React.Component {
     }
 
     render() {
-        console.log("Pagination:render", this.props.pageLength);
+        console.log("PAGINATION:RENDER", this.props.pageLength);
         
         let totalRecords = this.props.totalRecords;
         let pages = Math.ceil(totalRecords / this.props.pageLength);

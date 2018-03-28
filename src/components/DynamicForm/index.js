@@ -18,8 +18,8 @@ export default  class DynamicForm extends React.Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-
-        alert(JSON.stringify(this.state));
+        //alert(JSON.stringify(this.state));
+        if (this.props.onSubmit) this.props.onSubmit(this.state);
     }
     renderForm = () => {
         let model = this.props.model;
