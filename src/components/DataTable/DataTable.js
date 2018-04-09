@@ -127,11 +127,12 @@ export default  class DataTable extends React.Component {
             return;
         }
         var idx = e.target.dataset.idx;
-
+        console.log("TARGET COL: ", this.state.headers[idx]);
+        let targetCol = this.state.headers[idx].accessor;
         var searchdata = this._preSearchData.filter((row) => {
-            let colName = Object.keys(row)[idx];
-            console.log(`searching ${colName}`)
-            return row[colName].toString().toLowerCase().indexOf(needle) > -1;
+            //let colName = Object.keys(row)[idx];
+            console.log(`searching ${targetCol}`)
+            return row[targetCol].toString().toLowerCase().indexOf(needle) > -1;
         });
         this.setState({
             data: searchdata,

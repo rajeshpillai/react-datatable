@@ -66,7 +66,7 @@ export default class App extends React.Component {
     console.log("APP:RENDER", this.state.data);
       return (
         <div className="app">
-          <DynamicForm className="form"
+          <DynamicForm className="form" show={false}
             title = "Registration"
             model={[
               {key: "name", label: "Name", props: {required: true}},
