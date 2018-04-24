@@ -28,10 +28,9 @@
 
 .data-table td {
   border: 1px solid #eee;
-  line-height: 1.1em;
   color: #212121;
   vertical-align: middle;
-  padding: 7px;
+  padding: 4px 7px;
 }
 
 .col-resizer {
@@ -50,6 +49,7 @@
   border:none;
   box-shadow: 2px 2px 4px grey;
   background-color: lightgray;
+  vertical-align: middle;
 }
 
 .data-table-caption {
