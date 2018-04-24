@@ -9,7 +9,7 @@
 
 .data-table {
   padding:10px;
-  box-shadow: 2px 2px 2px 2px grey;
+  box-shadow: 2px 2px 2px 1px rgb(90, 88, 88);
 }
 
 .data-inner-table {
@@ -23,6 +23,7 @@
   border: 1px solid #e5e5e5;
   text-align: left;
   font-weight: normal;
+  line-height: 2em;
 }
 
 .data-table td {
@@ -30,7 +31,7 @@
   line-height: 1.1em;
   color: #212121;
   vertical-align: middle;
-  padding: 3px;
+  padding: 7px;
 }
 
 .col-resizer {

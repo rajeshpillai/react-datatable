@@ -10,6 +10,10 @@
   color: black;
 }
   
+.pagination-btn {
+  border: 0;
+  line-height: 1.7em;
+}
 .pagination-btn.next, .pagination-btn.prev {
   color: black;
 }
