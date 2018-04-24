@@ -8,7 +8,7 @@ import './App.css';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    let model = {
       headers: [
         {title:"Id",accessor: "id", index: 0},
         {title:"Profile",accessor:"profile", width: 80, index:1,cell:{
@@ -41,7 +41,7 @@ export default class App extends React.Component {
 
     var data = [];
     for(var i = 4; i <= 20; i ++) {
-      data.push({
+      model.data.push({
         id: i,
         name: "name " + i,
         age: i + 18,
@@ -50,7 +50,7 @@ export default class App extends React.Component {
         profile: "./img/profile.png"
       })
     }
-    this.state.data = [...this.state.data, ...data]
+    this.state = model;
   }
 
   // From dynamic form
