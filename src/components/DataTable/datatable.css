@@ -8,8 +8,12 @@
 }
 
 .data-table {
+  padding:10px;
+  box-shadow: 2px 2px 2px 2px grey;
+}
+
+.data-inner-table {
   border-collapse: collapse;
-  box-shadow: 1px 2px 2px grey;
 }
 
 .data-table th {
@@ -48,7 +52,7 @@
 }
 
 .data-table-caption {
-  padding: 15px;
+  padding: 15px 5px;
   text-align: left;
   font-weight: bold;
   font-size: 1.2em;

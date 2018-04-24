@@ -323,7 +323,7 @@ export default  class DataTable extends React.Component {
         let contentView = this._renderContent();
         let title = this.props.title || "Data Table";
         return (
-            <table className="data-table" border="1" style={{width: this.width}}>
+            <table className="data-inner-table" border="1" style={{width: this.width}}>
                 <caption className="data-table-caption">{title}</caption>
                 <thead onClick={this.onSort}>
                     <tr>

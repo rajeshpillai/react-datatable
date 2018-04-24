@@ -1,8 +1,9 @@
 
 .pagination {
   display: inline-block;
-  font-size: 0.7em;
+  font-size: 1em;
   padding: 10px 0px;
+  color: gray;
 }
 .current-page {
   background-color: skyblue;
@@ -20,7 +21,6 @@
 .page-selector > input {
   width: 3em;
   text-align: center;
-  
 }
   
 .current-page-input {
