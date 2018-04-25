@@ -4,7 +4,7 @@ import Pagination from './Pagination';
 import './datatable.css';
 
 export default  class DataTable extends React.Component {
-   
+
     constructor(props) {
         super(props);
         this.state = {
@@ -38,7 +38,7 @@ export default  class DataTable extends React.Component {
 
     onSort=(e) => {
         var data = this.state.data.slice();
-        var column = ReactDOM.findDOMNode(e.target).parentNode.cellIndex; 
+        var column = ReactDOM.findDOMNode(e.target).parentNode.cellIndex;
         var colTitle = e.target.dataset.col;
         //column = e.target.cellIndex;
         var descending = this.state.sortby === column && !this.state.descending;
@@ -66,7 +66,7 @@ export default  class DataTable extends React.Component {
         let id = e.target.dataset.id;
         console.log(`editing row with id-> ${id}`);
 
-        this.setState({ 
+        this.setState({
             edit: {
                 row: parseInt(e.target.dataset.row, 10),
                 rowId: id,
@@ -163,12 +163,12 @@ export default  class DataTable extends React.Component {
     renderToolbar = () =>{
         return (
             <div className="toolbar">
-                <button 
+                <button
                     onClick={this.onToggleSearch}>search</button>
             </div>
         );
     }
-    
+
     onDragStart = (e, source) => {
         console.log('dragstart:',source);
         e.dataTransfer.setData("source", source);
@@ -207,12 +207,12 @@ export default  class DataTable extends React.Component {
         let pagedData = this.getPagedData(pageNo, this.state.pageLength);
         this.setState({
             pagedData: pagedData
-        });        
+        });
     }
 
     onPageLengthChange = (pageLength) => {
         this.setState({
-            pageLength: parseInt(pageLength,10)  
+            pageLength: parseInt(pageLength,10)
         }, () => {
             this.onGotoPage(null, this.currentPage);
         });
@@ -258,7 +258,7 @@ export default  class DataTable extends React.Component {
                 title += this.state.descending ? '\u2191': '\u2193'
             }
             return (
-                <th key={index} 
+                <th key={index}
                     ref={(th)=>this.th=th}
                     style={{width: width}}
                     data-col={cleanTitle}
@@ -266,7 +266,7 @@ export default  class DataTable extends React.Component {
                     onDrag={(e)=>this.onDrag(e, index)}
                     onDragOver={(e)=>this.onDragover(e)}
                     onDrop={(e) =>{this.onDrop(e, index)}} >
-                    <span 
+                    <span
                         data-col={cleanTitle}
                         draggable className="header-cell">
                         {title}
@@ -276,7 +276,7 @@ export default  class DataTable extends React.Component {
         });
         return headerView;
     }
-    
+
     _renderContent = () => {
         var {headers} = this.state;
         let data = this.pagination.enabled ?  this.state.pagedData : this.state.data;
@@ -284,40 +284,42 @@ export default  class DataTable extends React.Component {
         var contentView = data.map((row, rowIdx) => {
             var edit = this.state.edit;
             let id =  row[this.keyField];
-            return (<tr key={rowIdx}>
-                 {
-                    // Loop through headers 
-                    headers.map((header, index) => {
-                        // Get the content for the header.  This will work with col reordering.
-                        let content = row[header.accessor];
-                        let cell = header.cell; // row[header.colRenderer];
-                        if (cell) {
-                            if (typeof(cell) === "object") {
-                                if (cell.type === "image" && content) {
-                                    content = <img style={cell.style} src={content} />
-                                }
-                            } else if (typeof(cell) === "function") {
-                                content = cell(content);
-                            }
+            let tds = headers.map((header, index) => {
+                // Get the content for the header.  This will work with col reordering.
+                let content = row[header.accessor];
+                let cell = header.cell; // row[header.colRenderer];
+                if (cell) {
+                    if (typeof(cell) === "object") {
+                        if (cell.type === "image" && content) {
+                            content = <img style={cell.style} src={content} />
                         }
-                        if (edit && edit.row === rowIdx && edit.cell===index) {
-                            content = <form onSubmit={this.onSave}>
-                                <input type="text" defaultValue={content} />
-                            </form>
-                        }
-                        return (
-                            <td key={index}
-                                data-id={id} 
-                                data-row={rowIdx}>
-                                { content }
-                            </td>
-                        );
-                    })}
-            </tr>);
+                    } else if (typeof(cell) === "function") {
+                        content = cell(content);
+                    }
+                }
+                if (edit && edit.row === rowIdx && edit.cell===index) {
+                    content = <form onSubmit={this.onSave}>
+                        <input type="text" defaultValue={content} />
+                    </form>
+                }
+                return (
+                    <td key={index}
+                        data-id={id}
+                        data-row={rowIdx}>
+                        { content }
+                    </td>
+                );
+            })
+            return (
+                <tr key={rowIdx}>
+                    {tds}
+                </tr>
+            );
         });
 
         return contentView;
     }
+
     renderTable = () => {
         let headerView = this._renderTableHeader();
         let contentView = this._renderContent();
@@ -341,11 +343,11 @@ export default  class DataTable extends React.Component {
 
     render() {
         console.log("DataTable:render", this.props.data);
-        
+
         return (
             <div className={this.props.className}>
-                {this.pagination.enabled && 
-                     <Pagination 
+                {this.pagination.enabled &&
+                     <Pagination
                     type = {this.props.pagination.type}
                     totalRecords={this.state.data.length}
                     pageLength = {this.state.pageLength}
