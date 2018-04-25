@@ -288,31 +288,31 @@ export default  class DataTable extends React.Component {
                  {
                     // Loop through headers 
                     headers.map((header, index) => {
-                    // Get the content for the header.  This will work with col reordering.
-                    let content = row[header.accessor];
-                    let cell = header.cell; // row[header.colRenderer];
-                    if (cell) {
-                        if (typeof(cell) === "object") {
-                            if (cell.type === "image" && content) {
-                                content = <img style={cell.style} src={content} />
+                        // Get the content for the header.  This will work with col reordering.
+                        let content = row[header.accessor];
+                        let cell = header.cell; // row[header.colRenderer];
+                        if (cell) {
+                            if (typeof(cell) === "object") {
+                                if (cell.type === "image" && content) {
+                                    content = <img style={cell.style} src={content} />
+                                }
+                            } else if (typeof(cell) === "function") {
+                                content = cell(content);
                             }
-                        } else if (typeof(cell) === "function") {
-                            content = cell(content);
                         }
-                    }
-                    if (edit && edit.row === rowIdx && edit.cell===index) {
-                        content = <form onSubmit={this.onSave}>
-                            <input type="text" defaultValue={content} />
-                        </form>
-                    }
-                    return (
-                        <td key={index}
-                            data-id={id} 
-                            data-row={rowIdx}>
-                            { content }
-                        </td>
-                    );
-                })}
+                        if (edit && edit.row === rowIdx && edit.cell===index) {
+                            content = <form onSubmit={this.onSave}>
+                                <input type="text" defaultValue={content} />
+                            </form>
+                        }
+                        return (
+                            <td key={index}
+                                data-id={id} 
+                                data-row={rowIdx}>
+                                { content }
+                            </td>
+                        );
+                    })}
             </tr>);
         });
 
