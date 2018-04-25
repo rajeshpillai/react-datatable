@@ -33,9 +33,9 @@ export default class App extends React.Component {
         )},
       ],
       data: [
-          {id: 1, name:"a", age:29, qualification:"B.Com",rating:3,profile: "./img/profile.png"},
-          {id: 2, name:"b", age:35, qualification:"B.Sc",rating:5,profile:"./img/profile.png"},
-          {id: 3, name:"c", age:42, qualification:"B.E",rating:3,profile:"./img/profile.png"},
+          {id: 1, name:"a", age:29, qualification:"B.Com",rating:3,profile: "https://png.icons8.com/nolan/50/000000/user.png"},
+          {id: 2, name:"b", age:35, qualification:"B.Sc",rating:5,profile:"https://png.icons8.com/nolan/50/000000/user.png"},
+          {id: 3, name:"c", age:42, qualification:"B.E",rating:3,profile:"https://png.icons8.com/nolan/50/000000/user.png"},
         ]
     }
 
@@ -47,7 +47,7 @@ export default class App extends React.Component {
         age: i + 18,
         qualification: "Graduate",
         rating: (i%2 ? 3 : 4),
-        profile: "./img/profile.png"
+        profile: "https://png.icons8.com/dotty/50/000000/cat-profile.png"
       })
     }
     this.state = model;
