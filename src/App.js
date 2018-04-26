@@ -10,7 +10,7 @@ export default class App extends React.Component {
     super(props);
     let model = {
       headers: [
-        {title:"Id",accessor: "id", index: 0},
+        {title:"Id",accessor: "id", index: 0, dataType: "number"},
         {title:"Profile",accessor:"profile", width: 80, index:1,cell:{
           type: "image",
           style: {
@@ -60,7 +60,7 @@ export default class App extends React.Component {
     this.setState({
       data: [model, ...this.state.data]
     })
-    
+
   }
   render() {
     console.log("APP:RENDER", this.state.data);
@@ -85,8 +85,8 @@ export default class App extends React.Component {
               type: "long"  // long,short
             }}
             width="100%"
-            headers={this.state.headers} 
-            data={this.state.data} 
+            headers={this.state.headers}
+            data={this.state.data}
             noData="No records!" />
         </div>
       );

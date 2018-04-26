@@ -36,15 +36,31 @@ export default  class DataTable extends React.Component {
 
     _preSearchData = null
 
+    _findHeaderByAccessor = (accessor) => {
+        let header = this.state.headers.find((h) => {
+           return h.accessor === accessor;
+        });
+        return header;
+    }
+
     onSort=(e) => {
         var data = this.state.data.slice();
-        var column = ReactDOM.findDOMNode(e.target).parentNode.cellIndex;
+        var colIndex = ReactDOM.findDOMNode(e.target).parentNode.cellIndex;
         var colTitle = e.target.dataset.col;
-        //column = e.target.cellIndex;
-        var descending = this.state.sortby === column && !this.state.descending;
+        var descending = !this.state.descending;
+
+        let colMeta = this._findHeaderByAccessor(colTitle);
+
+        colMeta.dataType = colMeta.dataType || "string";
+
+        this.setState({
+            data: data,
+            sortby: colIndex,
+            descending
+        });
+
         data.sort((a,b) => {
             var sortVal = 0;
-            console.log(`${a[colTitle]} - ${b[colTitle]}`)
             if (a[colTitle] < b[colTitle]) {
                 sortVal = -1;
             } else if (a[colTitle] > b[colTitle]){
@@ -53,11 +69,7 @@ export default  class DataTable extends React.Component {
             if (descending) {sortVal = sortVal * -1;}
             return sortVal;
         });
-        this.setState({
-            data: data,
-            sortby: column,
-            descending
-        });
+
 
         this.onGotoPage(null, this.currentPage);
     }
@@ -255,7 +267,7 @@ export default  class DataTable extends React.Component {
             let cleanTitle = header.accessor;
             let width = header.width;
             if (this.state.sortby === index) {
-                title += this.state.descending ? '\u2191': '\u2193'
+                title += this.state.descending ? '\u2193' : '\u2191';
             }
             return (
                 <th key={index}
