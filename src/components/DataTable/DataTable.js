@@ -53,11 +53,7 @@ export default  class DataTable extends React.Component {
 
         colMeta.dataType = colMeta.dataType || "string";
 
-        this.setState({
-            data: data,
-            sortby: colIndex,
-            descending
-        });
+
 
         data.sort((a,b) => {
             var sortVal = 0;
@@ -68,6 +64,12 @@ export default  class DataTable extends React.Component {
             }
             if (descending) {sortVal = sortVal * -1;}
             return sortVal;
+        });
+
+        this.setState({
+            data: data,
+            sortby: colIndex,
+            descending
         });
 
 
