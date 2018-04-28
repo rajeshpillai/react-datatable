@@ -133,12 +133,11 @@ export default  class DataTable extends React.Component {
     }
 
     onSearch = (e) => {
-        var needle = e.target.value.toLowerCase();
+        var needle = e.target.value.trim().toLowerCase();
         if (!needle) {
             this.setState({
                 data: this._preSearchData
             })
-            return;
         }
         var idx = e.target.dataset.idx;
         console.log("TARGET COL: ", this.state.headers[idx]);
@@ -159,20 +158,29 @@ export default  class DataTable extends React.Component {
     }
 
     renderSearch = () => {
-        if (!this.state.search) {
-            return null;
+        let {search, headers} = this.state;
+        if (!search) {
+          return null;
         }
-        return (
-            <tr onChange={this.onSearch}>
-                {this.state.headers.map((_ignore, idx) => {
-                    return (<td key={idx}>
-                            <input type="text" data-idx={idx} />
-                        </td>
-                    );
-                })}
-            </tr>
-        );
-    }
+        let searchInputs = headers.map((header, idx) => {
+          let hdr = this[header.accessor];
+          //  let bRect = hdr.getBoundingClientRect();
+          return (
+            <td key={idx}>
+              <input type="text"
+                style={{
+                    width: hdr.clientWidth-17 + "px"
+                }}
+                data-idx={idx} />
+           </td>
+          );
+       })
+       return (
+         <tr onChange={this.onSearch}>
+           {searchInputs}
+         </tr>
+       );
+  }
 
     renderToolbar = () =>{
         return (
@@ -273,7 +281,7 @@ export default  class DataTable extends React.Component {
             }
             return (
                 <th key={index}
-                    ref={(th)=>this.th=th}
+                    ref={(th)=>this[cleanTitle]=th}
                     style={{width: width}}
                     data-col={cleanTitle}
                     onDragStart={(e)=>this.onDragStart(e, index)}
