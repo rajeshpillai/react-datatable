@@ -26,6 +26,7 @@ export default  class DataTable extends React.Component {
         this._preSearchData = props.data;
     }
 
+
     setupPagination = () => {
         this.pagination = this.props.pagination || {};
         // this.paginationType  = this.props.pagination.type || "short";
@@ -134,19 +135,27 @@ export default  class DataTable extends React.Component {
     }
 
     onSearch = (e) => {
-        var needle = e.target.value.trim().toLowerCase();
-        if (!needle) {
-            this.setState({
-                data: this._preSearchData
-            })
-        }
+        let {headers} = this.state;
         var idx = e.target.dataset.idx;
-        console.log("TARGET COL: ", this.state.headers[idx]);
         let targetCol = this.state.headers[idx].accessor;
-        var searchdata = this._preSearchData.filter((row) => {
-            //let colName = Object.keys(row)[idx];
-            console.log(`searching ${targetCol}`)
-            return row[targetCol].toString().toLowerCase().indexOf(needle) > -1;
+        let data = this._preSearchData;
+
+        var searchdata = data.filter((row) => {
+            let show = true;
+            for(let i in row) {
+                let fieldValue = row[i];
+                let inputId = 'inp' + i;
+                let input = this[inputId];
+                //console.log(inputId, fieldValue, input.value);
+                if (!fieldValue === '') {
+                  show = true;
+                } else {
+                   show = fieldValue.toString().toLowerCase().indexOf(input.value.toLowerCase()) > -1;
+                   if (!show) break;
+                }
+
+            }
+            return show;
         });
         this.setState({
             data: searchdata,
@@ -166,10 +175,12 @@ export default  class DataTable extends React.Component {
         }
         let searchInputs = headers.map((header, idx) => {
           let hdr = this[header.accessor];
+          let inputId = 'inp' + header.accessor;
           //  let bRect = hdr.getBoundingClientRect();
           return (
             <td key={idx}>
               <input type="text"
+                ref={(input)=>this[inputId] = input}
                 style={{
                     width: hdr.clientWidth-17 + "px"
                 }}
