@@ -15,22 +15,23 @@ export default  class DataTable extends React.Component {
             descending: false,
             edit: null, // {row: index, cell: index}
             search: false,
-            pageLength: props.pagination.pageLength
+            pageLength: props.pagination.pageLength,
+            currentPage: 1,
         }
 
         this.keyField = props.keyField || "id";   // default 'id'
         this.noData = props.noData || "No Records found!!";
         this.width = props.width || "100%";
-        this.currentPage = 1;
         this.setupPagination();
+        this._preSearchData = props.data;
     }
 
     setupPagination = () => {
         this.pagination = this.props.pagination || {};
-        this.paginationType  = this.props.pagination.type || "short";
-        this.pageLength = this.props.pagination.pageLength || 5;
-        this.totalRecords = this.props.data.length;
-        this.pages = Math.ceil(this.totalRecords / this.pageLength);
+        // this.paginationType  = this.props.pagination.type || "short";
+        // this.pageLength = this.props.pagination.pageLength || 5;
+        // this.totalRecords = this.props.data.length;
+        // this.pages = Math.ceil(this.totalRecords / this.pageLength);
     }
 
 
@@ -73,7 +74,7 @@ export default  class DataTable extends React.Component {
         });
 
 
-        this.onGotoPage(null, this.currentPage);
+        this.onGotoPage(null, this.state.currentPage);
     }
 
     onShowEditor = (e) => {
@@ -149,12 +150,13 @@ export default  class DataTable extends React.Component {
         });
         this.setState({
             data: searchdata,
-            pagedData: searchdata
+            pagedData: searchdata,
+            totalRecords: searchdata.length,
+        },()=> {
+            if (this.pagination.enabled) {
+             this.onGotoPage(null, 1);
+            }
         });
-
-        // if (this.pagination.enabled) {
-        //     this.onGotoPage(null, this.currentPage);
-        // }
     }
 
     renderSearch = () => {
@@ -225,10 +227,10 @@ export default  class DataTable extends React.Component {
 
     onGotoPage = (e, pageNo) => {
         console.log("onGotoPage: ", pageNo, this.state.pageLength);
-        this.currentPage = pageNo;
         let pagedData = this.getPagedData(pageNo, this.state.pageLength);
         this.setState({
-            pagedData: pagedData
+            pagedData: pagedData,
+            currentPage: pageNo
         });
     }
 
@@ -236,15 +238,17 @@ export default  class DataTable extends React.Component {
         this.setState({
             pageLength: parseInt(pageLength,10)
         }, () => {
-            this.onGotoPage(null, this.currentPage);
+            this.onGotoPage(null, this.state.currentPage);
         });
     }
 
     getPagedData =  (pageNo, pageLength) => {
-        console.log(`getting paged data for pageno ${pageNo} and records per page ${pageLength}`)
         let startOfRecord = (pageNo - 1) * pageLength;
         let endOfRecord = startOfRecord + pageLength;
-        let pagedData = this.state.data.slice(startOfRecord, endOfRecord);
+        let data = this.state.data;
+        let pagedData = data.slice(startOfRecord, endOfRecord);
+
+        console.log(`getPagedData(${pageNo})->`, pagedData, data);
         return pagedData;
     }
 
@@ -257,15 +261,13 @@ export default  class DataTable extends React.Component {
     }
 
     componentDidMount() {
-        console.log("cDM: ", this.currentPage);
         if (this.pagination.enabled) {
-            this.onGotoPage(null, this.currentPage);
+            this.onGotoPage(null, this.state.currentPage);
         }
     }
 
     _renderTableHeader = () => {
-        var {headers} = this.state;
-        let data = this.pagination.enabled ?  this.state.pagedData : this.state.data;
+        var {headers, data} = this.state;
 
         headers.sort((a, b) => {
             if (a.index > b.index) return 1;
@@ -301,7 +303,8 @@ export default  class DataTable extends React.Component {
 
     _renderContent = () => {
         var {headers} = this.state;
-        let data = this.pagination.enabled ?  this.state.pagedData : this.state.data;
+        let data = this.pagination ? this.state.pagedData
+                    : this.state.data;
 
         var contentView = data.map((row, rowIdx) => {
             var edit = this.state.edit;
@@ -346,6 +349,8 @@ export default  class DataTable extends React.Component {
         let headerView = this._renderTableHeader();
         let contentView = this._renderContent();
         let title = this.props.title || "Data Table";
+        let data = this.pagination.enabled ?
+                    this.state.pagedData : this.state.data;
         return (
             <table className="data-inner-table" border="1" style={{width: this.width}}>
                 <caption className="data-table-caption">{title}</caption>
@@ -356,23 +361,25 @@ export default  class DataTable extends React.Component {
                 </thead>
                 <tbody onDoubleClick={this.onShowEditor}>
                     {this.renderSearch()}
-                    {!this.state.data.length && this.noData}
-                    {this.state.data && contentView}
+                    {!data.length && this.noData}
+                    {data && contentView}
                 </tbody>
             </table>
         );
     }
 
     render() {
-        console.log("DataTable:render", this.props.data);
+        let data = this.pagination ? this.state.pagedData : this.state.data;
+        console.log("DataTable:render:CP:", this.state.currentPage,data);
 
         return (
             <div className={this.props.className}>
                 {this.pagination.enabled &&
-                     <Pagination
+                 <Pagination
                     type = {this.props.pagination.type}
                     totalRecords={this.state.data.length}
                     pageLength = {this.state.pageLength}
+                    currentPage = {this.state.currentPage}
                     onPageLengthChange = {this.onPageLengthChange}
                     onGotoPage = {this.onGotoPage}/>
                  }
