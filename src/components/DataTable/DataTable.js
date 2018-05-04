@@ -75,7 +75,7 @@ export default  class DataTable extends React.Component {
         });
 
 
-        this.onGotoPage(null, this.state.currentPage);
+        this.onGotoPage(this.state.currentPage);
     }
 
     onShowEditor = (e) => {
@@ -163,7 +163,7 @@ export default  class DataTable extends React.Component {
             totalRecords: searchdata.length,
         },()=> {
             if (this.pagination.enabled) {
-             this.onGotoPage(null, 1);
+             this.onGotoPage(1);
             }
         });
     }
@@ -236,7 +236,7 @@ export default  class DataTable extends React.Component {
     }
 
 
-    onGotoPage = (e, pageNo) => {
+    onGotoPage = (pageNo) => {
         console.log("onGotoPage: ", pageNo, this.state.pageLength);
         let pagedData = this.getPagedData(pageNo, this.state.pageLength);
         this.setState({
@@ -249,7 +249,7 @@ export default  class DataTable extends React.Component {
         this.setState({
             pageLength: parseInt(pageLength,10)
         }, () => {
-            this.onGotoPage(null, this.state.currentPage);
+            this.onGotoPage(this.state.currentPage);
         });
     }
 
@@ -273,7 +273,7 @@ export default  class DataTable extends React.Component {
 
     componentDidMount() {
         if (this.pagination.enabled) {
-            this.onGotoPage(null, this.state.currentPage);
+            this.onGotoPage(this.state.currentPage);
         }
     }
 
