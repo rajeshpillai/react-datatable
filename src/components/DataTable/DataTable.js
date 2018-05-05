@@ -91,33 +91,7 @@ export default  class DataTable extends React.Component {
         });
     }
 
-    onSave = (e) => {
-        e.preventDefault();
-        var input = e.target.firstChild;
 
-        var header  = this.state.headers[this.state.edit.cell];
-
-        // Clone the data
-        var data = this.state.data.slice();
-        var rowId = this.state.edit.rowId;
-        // Update the data
-        //data[this.state.edit.row][header.accessor]= input.value;
-
-        var updateRow = this.state.data.find((d) => {
-            return d[this.keyField] == rowId;
-        })
-
-        console.log("found: ", updateRow);
-
-        updateRow[header.accessor] = input.value;
-
-        // Update state
-        this.setState({
-            edit: null, // done editing
-            data: data
-        });
-
-    }
 
     onToggleSearch = () => {
         if (this.state.search) {
@@ -312,6 +286,41 @@ export default  class DataTable extends React.Component {
         return headerView;
     }
 
+    onSave = (e) => {
+        e.preventDefault();
+        var input = e.target.firstChild;
+
+        var header  = this.state.headers[this.state.edit.cell];
+
+        // Clone the data
+        var data = this.state.data.slice();
+        var rowId = this.state.edit.rowId;
+        // Update the data
+        //data[this.state.edit.row][header.accessor]= input.value;
+
+        var updateRow = this.state.data.find((d) => {
+            return d[this.keyField] == rowId;
+        })
+
+        updateRow[header.accessor] = input.value;
+
+        // Update state
+        this.setState({
+            edit: null, // done editing
+            data: data
+        });
+    }
+
+
+    onFormReset = (e) => {
+        if (e.keyCode === 27) {
+             // Update state
+            this.setState({
+                edit: null, // done editing
+            });
+        }
+    }
+
     _renderContent = () => {
         var {headers} = this.state;
         let data = this.pagination ? this.state.pagedData
@@ -335,7 +344,7 @@ export default  class DataTable extends React.Component {
                 }
                 if (edit && edit.row === rowIdx && edit.cell===index) {
                     content = <form onSubmit={this.onSave}>
-                        <input type="text" defaultValue={content} />
+                        <input onKeyUp={this.onFormReset} type="text" defaultValue={content} />
                     </form>
                 }
                 return (
