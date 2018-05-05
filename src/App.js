@@ -102,6 +102,7 @@ export default class App extends React.Component {
           <DataTable className="data-table"
             title="USER PROFILES"
             keyField="id"
+            edit={false}
             pagination={{
               enabled: true,
               pageLength: 10,

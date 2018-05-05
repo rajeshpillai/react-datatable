@@ -335,15 +335,18 @@ export default  class DataTable extends React.Component {
                     }
                 }
 
-                if (header.dataType && (header.dataType === "number" ||
-                        header.dataType === "string") &&
-                        header.accessor !== this.keyField) {
-                    if (edit && edit.row === rowIdx && edit.cell===index) {
-                        content = <form onSubmit={this.onSave}>
-                            <input onKeyUp={this.onFormReset} type="text" defaultValue={content} />
-                        </form>
+                if (this.props.edit) {
+                    if (header.dataType && (header.dataType === "number" ||
+                            header.dataType === "string") &&
+                            header.accessor !== this.keyField) {
+                        if (edit && edit.row === rowIdx && edit.cell===index) {
+                            content = <form onSubmit={this.onSave}>
+                                <input onKeyUp={this.onFormReset} type="text" defaultValue={content} />
+                            </form>
+                        }
                     }
                 }
+
                 return (
                     <td key={index}
                         data-id={id}
