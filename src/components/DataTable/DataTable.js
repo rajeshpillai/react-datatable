@@ -342,10 +342,14 @@ export default  class DataTable extends React.Component {
                         content = cell(content);
                     }
                 }
-                if (edit && edit.row === rowIdx && edit.cell===index) {
-                    content = <form onSubmit={this.onSave}>
-                        <input onKeyUp={this.onFormReset} type="text" defaultValue={content} />
-                    </form>
+
+                if (header.dataType && header.dataType === "number" ||
+                        header.dataType === "string") {
+                    if (edit && edit.row === rowIdx && edit.cell===index) {
+                        content = <form onSubmit={this.onSave}>
+                            <input onKeyUp={this.onFormReset} type="text" defaultValue={content} />
+                        </form>
+                    }
                 }
                 return (
                     <td key={index}

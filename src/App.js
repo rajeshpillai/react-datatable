@@ -17,10 +17,13 @@ export default class App extends React.Component {
             "width": "50px",
           }
         }},
-        {title:"Name",accessor: "name", width: 300, index: 2},
-        {title:"Age",accessor: "age",index: 3},
-        {title:"Qualification",accessor: "qualification",index:4},
-        {title:"Rating",accessor: "rating",index:3,width: 200, cell: row => (
+        {title:"Name",accessor: "name", width: 300, index: 2,dataType: "string"},
+        {title:"Age",accessor: "age",index: 3, dataType: "number"},
+        {title:"Qualification",accessor: "qualification",index:4,
+                dataType: "string"},
+        {title:"Rating",accessor: "rating",index:3,width: 200,
+          dataType: "custom",
+          cell: row => (
           <div  className="rating">
             <div style={{
               backgroundColor: "lightskyblue",
