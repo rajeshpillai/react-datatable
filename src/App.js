@@ -29,9 +29,9 @@ export default class App extends React.Component {
               backgroundColor: "lightskyblue",
               textAlign:"center",
               height: "1.9em",
-              width: (row/5) * 201  + "px",
+              width: (row.rating/5) * 201  + "px",
               margin: "3px 0 4px 0"
-           }}>{row}</div>
+           }}>{row.rating}</div>
           </div>
         )},
       ],

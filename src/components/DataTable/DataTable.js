@@ -136,7 +136,7 @@ export default class DataTable extends React.Component {
                             content = <img style={cell.style} src={content}  />
                         }
                     } else if (typeof(cell) === "function") {
-                        content = cell(content);
+                        content = cell(row);
                     }
                 }
 
