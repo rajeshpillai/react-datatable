@@ -1,45 +1,61 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import "./pagination.css";
+import React, {Fragment, Component } from 'react';
+import './pagination.css';
 
-export default  class Pagination extends React.Component {
+export default class Pagination extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPage: props.currentPage || 1,
-        };
+            currentPage: props.currentPage || 1
+        }
+
     }
 
-
+    onPageLengthChange = (e) => {
+        this.props.onPageLengthChange(this.pageLengthInput.value);
+    }
 
     onPrevPage = (e) => {
-        if (this.state.currentPage == 1) return;
-        this.onGotoPage(this.state.currentPage-1);
+        if (this.state.currentPage === 1) return;
+        this.onGotoPage(this.state.currentPage - 1);
     }
 
     onNextPage = (e) => {
         if (this.state.currentPage > this.pages - 1) return;
-        let currentPageBtn = document.getElementById(`btn-${this.currentPage}`);
         this.onGotoPage(this.state.currentPage + 1);
     }
 
     onGotoPage = (pageNo) => {
-        console.log("pageno: ", pageNo);
         if (pageNo === this.state.currentPage) {
             return;
         }
         if (this.currentPageInput) {
-            this.currentPageInput.value = pageNo
+            this.currentPageInput.value = pageNo;
         }
+
         this.setState({
             currentPage: pageNo
         });
+
         this.props.onGotoPage(pageNo);
     }
 
-    onPageLengthChange = (e) => {
-        //this.forceUpdate();
-        this.props.onPageLengthChange(this.pageLength.value);
+    _getPaginationButtons = (text) => {
+        let classNames = 'pagination-btn';
+
+        // May need refactor
+        if (this.state.currentPage == text) {
+            classNames += ' current-page';
+        }
+
+        let html = (
+            <button key={`btn-${text}`}
+                id={`btn-${text}`}
+                className={classNames}
+                onClick={(e)=>{this.onGotoPage(text)}}
+            >{text}
+            </button>
+        );
+        return html;
     }
 
     onCurrentPageChange = (e) => {
@@ -48,50 +64,56 @@ export default  class Pagination extends React.Component {
         }
         this.setState({
             currentPage: this.currentPageInput.value
-        })
+        });
 
         this.props.onGotoPage(this.currentPageInput.value);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        console.log("nextProps,prevState-> ", nextProps, prevState);
         if (nextProps.currentPage != prevState.currentPage) {
             return {
-                currentPage: nextProps.currentPage
+               currentPage: nextProps.currentPage
             }
         }
         return null;
     }
-
-     _getPaginationButtons =  (text) => {
-        let classNames = 'pagination-btn';
-        if (this.state.currentPage == text) {
-            classNames += ' current-page';
-        }
-        let html = (
-            <button key={`btn-${text}`} id={`btn-${text}`}
-                className={classNames}
-                type="button"
-                onClick={(e)=> {this.onGotoPage(text)}}
-            >{text}
-            </button>
-        );
-
-        return html;
-    }
-
 
     render() {
         let totalRecords = this.props.totalRecords;
         let pages = Math.ceil(totalRecords / this.props.pageLength);
         this.pages = pages;
 
+        let pageSelector = (
+            <Fragment key="f-page-selector">
+                <span key="page-selector" className="page-selector">
+                    Rows per page:
+                    <input key="page-input"
+                      type="number"
+                      min="1"
+                      ref={(input)=>this.pageLengthInput = input}
+                      defaultValue={this.props.pageLength || 5}
+                      onChange={this.onPageLengthChange}
+                    />
+                </span>
+            </Fragment>
+        );
+
         let prevButton = (
-            <button key="prev" className="pagination-btn prev"
-                onClick={(e)=> {this.onPrevPage(e)}}
-                type="button">
+            <button key="prev"
+                className="pagination-btn prev"
+                onClick={this.onPrevPage}>
                 {"<"}
             </button>
+
+        );
+
+        let nextButton = (
+            <button key="next"
+                className="pagination-btn next"
+                onClick={this.onNextPage}>
+                {">"}
+            </button>
+
         );
 
         let buttons = [];
@@ -101,41 +123,21 @@ export default  class Pagination extends React.Component {
             }
         } else if (this.props.type === "short") {
             buttons.push(
-                <input
-                    key="currentPageInput"
+                <input key="currentPageInput"
                     className="current-page-input"
                     type="number"
                     max={this.pages}
-                    onChange={(e)=>{this.onCurrentPageChange()}}
-                    defaultValue = {this.state.currentPage}
-                    ref={(currentPageInput)=> { this.currentPageInput=currentPageInput}} />
+                    defaultValue={this.state.currentPage}
+                    ref={(input)=>{this.currentPageInput=input}}
+                    onChange={this.onCurrentPageChange} />
             );
         }
 
-        let nextButton = (
-            <button key="next" className="pagination-btn prev"
-                onClick={(e)=> {this.onNextPage(e)}}
-                type="button">
-                {">"}
-            </button>
-        );
-
-        let pageSelector = (
-            <React.Fragment key="s100">
-                <span key="page-selector" className="page-selector">Rows per page:
-                    <input key="ps-no"
-                        defaultValue={this.props.pageLength || 5}
-                        type="number"
-                        min="1"
-                        ref={(pageLength)=>this.pageLength=pageLength}
-                        onChange={(e)=>{this.onPageLengthChange()}}  />
-                </span>
-            </React.Fragment>
-        );
-
         return (
             <div className="pagination">
-                {[pageSelector, prevButton, buttons, nextButton]}
+            {
+                [pageSelector, prevButton, buttons, nextButton]
+            }
             </div>
         );
     }

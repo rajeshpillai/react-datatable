@@ -99,14 +99,14 @@ export default class App extends React.Component {
             ]}
             onSubmit = {(model)=> {this.onSubmit(model)}}
           />
-          <DataTable className="data-table"
+           <DataTable className="data-table"
             title="USER PROFILES"
             keyField="id"
-            edit={false}
+            edit={true}
             pagination={{
               enabled: true,
-              pageLength: 10,
-              type: "long"  // long,short
+              pageLength: 5,
+              type: "long"  // long, short
             }}
             width="100%"
             headers={this.state.headers}
