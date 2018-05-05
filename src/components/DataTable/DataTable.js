@@ -292,23 +292,15 @@ export default  class DataTable extends React.Component {
 
         var header  = this.state.headers[this.state.edit.cell];
 
-        // Clone the data
-        var data = this.state.data.slice();
         var rowId = this.state.edit.rowId;
-        // Update the data
-        //data[this.state.edit.row][header.accessor]= input.value;
-
-        var updateRow = this.state.data.find((d) => {
-            return d[this.keyField] == rowId;
-        })
-
-        updateRow[header.accessor] = input.value;
 
         // Update state
         this.setState({
             edit: null, // done editing
-            data: data
         });
+
+        this.props.onUpdate &&
+            this.props.onUpdate(header.accessor,rowId, input.value);
     }
 
 

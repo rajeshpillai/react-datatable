@@ -65,6 +65,26 @@ export default class App extends React.Component {
     })
 
   }
+
+  onUpdateTable = (field, id, value) => {
+    alert(id);
+
+    // Clone the data
+    var data = this.state.data.slice();
+
+    var updateRow = this.state.data.find((d) => {
+        return d["id"] == id;
+    })
+
+    updateRow[field] = value;
+
+    // Update state
+    this.setState({
+        edit: null, // done editing
+        data: data
+    });
+  }
+
   render() {
     console.log("APP:RENDER", this.state.data);
       return (
@@ -90,7 +110,8 @@ export default class App extends React.Component {
             width="100%"
             headers={this.state.headers}
             data={this.state.data}
-            noData="No records!" />
+            noData="No records!"
+            onUpdate={this.onUpdateTable}/>
         </div>
       );
   }
