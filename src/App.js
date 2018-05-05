@@ -31,7 +31,7 @@ export default class App extends React.Component {
               height: "1.9em",
               width: (row.rating/5) * 201  + "px",
               margin: "3px 0 4px 0"
-           }}>{row.rating}</div>
+           }}><a href={`/showchart/${row.rating}`}>{row.rating}</a></div>
           </div>
         )},
       ],
